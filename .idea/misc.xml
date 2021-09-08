@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/author_tv_background.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/big_article_gradient.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/bottom_nav_background.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/category_tv_background.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/detail_article_thumbnail_gradient.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/detail_screen_bottomsheet_shape.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/ic_favorite.xml" value="0.3255208333333333" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/pumpkin_off.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/pumpkin_on.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/switch_thumb.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/switch_track.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/thumb_off.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/drawable/thumb_on.xml" value="0.35625" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/font/my_fonts.xml" value="0.3703125" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/activity_details.xml" value="0.33" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/activity_home.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/big_article_item_row.xml" value="0.33" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/category_item.xml" value="0.67" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/country_bottom_sheet.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_category_news_viewer.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_country_bottom_sheet.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_details_article.xml" value="0.33" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_favorites.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/fragment_search_articles.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/item_switch.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/paging_footer.xml" value="0.33" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/small_article_item_row.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/layout/title_item_row.xml" value="0.18" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/menu/bottom_nav_menu.xml" value="0.34010416666666665" />
+        <entry key="..\:/Users/Rajit/Desktop/Android_Projects/Samachaar/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.35625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

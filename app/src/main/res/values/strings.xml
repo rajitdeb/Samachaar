@@ -1,0 +1,27 @@
+<resources>
+
+    <string name="app_name">Samachaar</string>
+
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">Search</string>
+
+    <string name="made_in_india_with">Made in India with</string>
+    <string name="app_tagline">Read the World Today</string>
+    <string name="big_article_thumbnail">Big Article Thumbnail</string>
+    <string name="top_headlines">Top Headlines</string>
+    <string name="logo_first">Sama</string>
+    <string name="logo_last">Chaar</string>
+    <string name="country">Country</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="article_thumbnail">Article Thumbnail</string>
+    <string name="back_button">Back Button</string>
+    <string name="save_to_favourites">Save To Favourites</string>
+    <string name="description">Description</string>
+    <string name="learn_more">Learn More</string>
+    <string name="results_could_not_be_loaded">Results could not be loaded</string>
+    <string name="retry">Retry</string>
+    <string name="fab_button">Fab Button</string>
+
+</resources>

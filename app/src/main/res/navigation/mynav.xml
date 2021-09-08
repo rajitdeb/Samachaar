@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mynav"
+    app:startDestination="@id/home_fragment">
+
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.rajit.samachaar.ui.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_fragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+        <action
+            android:id="@+id/action_home_fragment_to_categoryNewsViewer"
+            app:destination="@id/categoryNewsViewer" />
+        <action
+            android:id="@+id/action_home_fragment_to_countryBottomSheet"
+            app:destination="@id/countryBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favorites_fragment"
+        android:name="com.rajit.samachaar.ui.fragments.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favorites_fragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/search_articles_fragment"
+        android:name="com.rajit.samachaar.ui.fragments.SearchArticlesFragment"
+        android:label="Search Articles"
+        tools:layout="@layout/fragment_search_articles" />
+
+    <fragment
+        android:id="@+id/categoryNewsViewer"
+        android:name="com.rajit.samachaar.ui.fragments.CategoryNewsViewer"
+        android:label="{categoryName} News"
+        tools:layout="@layout/fragment_category_news_viewer">
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+    </fragment>
+
+    <activity
+        android:id="@+id/detailsActivity"
+        android:name="com.rajit.samachaar.ui.activity.DetailsActivity"
+        android:label="Details"
+        tools:layout="@layout/activity_details">
+        <argument
+            android:name="article"
+            app:argType="com.rajit.samachaar.data.network.model.Article" />
+    </activity>
+
+    <dialog
+        android:id="@+id/countryBottomSheet"
+        android:name="com.rajit.samachaar.ui.fragments.CountryBottomSheet"
+        android:label="fragment_country_bottom_sheet"
+        tools:layout="@layout/country_bottom_sheet" />
+
+</navigation>
