@@ -1,5 +1,7 @@
 package com.rajit.samachaar.util
 
+import androidx.datastore.preferences.core.stringPreferencesKey
+
 class Constants {
 
     companion object {
@@ -23,7 +25,16 @@ class Constants {
 
         // ROOM
         const val FAVOURITES_TABLE_NAME = "favourites_table"
-        const val FAVOURITES_DB_NAME = "favourites_db"
+        const val COUNTRY_TABLE_NAME = "country_table"
+        const val FAVOURITES_DB_NAME = "news_db"
+
+        // PREFERENCES
+        const val PREFERENCES_NAME = "countryPreferences"
+        const val COUNTRY_PREFERENCE_KEY = "country"
+        const val COUNTRY_CODE_PREFERENCE_KEY = "countryCode"
+
+        const val DEFAULT_COUNTRY_PREFERENCES = "India"
+        const val DEFAULT_COUNTRY_CODE_PREFERENCES = "in"
 
     }
 

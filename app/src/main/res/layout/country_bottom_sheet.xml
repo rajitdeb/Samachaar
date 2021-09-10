@@ -4,16 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="60dp">
+    android:padding="16dp">
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Country Bottom Sheet"
-        android:textSize="22sp"
+        android:fontFamily="@font/gilroy_bold"
+        android:text="@string/set_a_country"
+        android:textColor="@color/heading_textcolor"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/this_allows_to_view_country_based_news"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/countrySelector"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/select_a_country"
+            app:hintTextColor="#757575"
+            android:fontFamily="@font/montserrat_semibold"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        style="@style/Widget.MaterialComponents.Button"
+        android:id="@+id/submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="@string/submit"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/countrySelector"
+        app:layout_constraintStart_toStartOf="@+id/countrySelector"
+        app:layout_constraintTop_toBottomOf="@+id/countrySelector" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

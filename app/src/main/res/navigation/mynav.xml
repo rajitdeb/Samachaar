@@ -61,6 +61,10 @@
         android:id="@+id/countryBottomSheet"
         android:name="com.rajit.samachaar.ui.fragments.CountryBottomSheet"
         android:label="fragment_country_bottom_sheet"
-        tools:layout="@layout/country_bottom_sheet" />
+        tools:layout="@layout/country_bottom_sheet" >
+        <action
+            android:id="@+id/action_countryBottomSheet_to_home_fragment"
+            app:destination="@id/home_fragment" />
+    </dialog>
 
 </navigation>

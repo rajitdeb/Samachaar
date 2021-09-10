@@ -6,10 +6,11 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.rajit.samachaar.data.local.dao.ArticlesDao
 import com.rajit.samachaar.data.local.database.typeconverters.ArticlesTypeConverter
+import com.rajit.samachaar.data.local.entity.Country
 import com.rajit.samachaar.data.local.entity.FavouriteArticlesEntity
 
 @Database(
-    entities = [FavouriteArticlesEntity::class],
+    entities = [FavouriteArticlesEntity::class, Country::class],
     version = 1,
     exportSchema = false
 )

@@ -10,15 +10,11 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.rajit.samachaar.data.local.entity.Country
 import com.rajit.samachaar.data.local.entity.FavouriteArticlesEntity
 import com.rajit.samachaar.data.network.model.Article
 import com.rajit.samachaar.data.repository.Repository
-import com.rajit.samachaar.ui.recylcerviewitem.TopHeadlinesRecyclerViewItem
 import com.rajit.samachaar.util.Constants
-import com.rajit.samachaar.util.Constants.Companion.QUERY_KEY_API_KEY
-import com.rajit.samachaar.util.Constants.Companion.QUERY_KEY_CATEGORY
-import com.rajit.samachaar.util.Constants.Companion.QUERY_KEY_COUNTRY
-import com.rajit.samachaar.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +27,8 @@ class MainViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     /** ROOM **/
+
+    var allCountriesList: LiveData<List<Country>> = repository.local.getAllCountries().asLiveData()
 
     var favouriteArticles: LiveData<List<FavouriteArticlesEntity>> =
         repository.local.getAllFavourites().asLiveData()
@@ -47,29 +45,18 @@ class MainViewModel @Inject constructor(
 
     /** RETROFIT **/
 
-    private var queries: HashMap<String, String> = HashMap()
-
-    var topHeadlines = MutableLiveData<PagingData<Article>>()
-
-    var topCategoryHeadlines = MutableLiveData<PagingData<Article>>()
-
-    fun getTopHeadlines(){
-        topHeadlines = repository.remote.getTopHeadlines(queries).cachedIn(viewModelScope).asLiveData()
-                as MutableLiveData<PagingData<Article>>
+    fun getTopHeadlines(query_country: String): LiveData<PagingData<Article>> {
+        Log.d("News Main ViewModel", "News Main ViewModel: $query_country")
+        return repository.remote.getTopHeadlines(query_country, Constants.QUERY_VALUE_API_KEY)
+            .cachedIn(viewModelScope).asLiveData()
     }
 
-    fun getTopCategoryHeadlines(){
-        topCategoryHeadlines = repository.remote.getTopCategoryHeadlines(queries).cachedIn(viewModelScope).asLiveData()
-                as MutableLiveData<PagingData<Article>>
-    }
-
-    // this applies the queries to the api
-    fun applyQueries(country: String, category: String? = null){
-        queries[QUERY_KEY_COUNTRY] = country
-        if(category != null){
-            queries[QUERY_KEY_CATEGORY] = category
-        }
-        queries[QUERY_KEY_API_KEY] = Constants.QUERY_VALUE_API_KEY
+    fun getTopCategoryHeadlines(query_country: String, query_category: String): LiveData<PagingData<Article>> {
+        return repository.remote.getTopCategoryHeadlines(
+                query_country,
+                query_category,
+                Constants.QUERY_VALUE_API_KEY
+            ).cachedIn(viewModelScope).asLiveData()
     }
 
     // code for checking internet connectivity

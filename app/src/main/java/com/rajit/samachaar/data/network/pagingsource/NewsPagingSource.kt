@@ -10,7 +10,9 @@ import com.rajit.samachaar.util.Constants.Companion.NEWS_STARTING_PAGE_INDEX
 
 class NewsPagingSource(
     private val newsApi: ArticlesApi,
-    private val queries: Map<String, String>
+    private val query_country: String,
+    private val query_category: String? = null,
+    private val query_apiKey: String
 ) : PagingSource<Int, Article>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
@@ -20,23 +22,24 @@ class NewsPagingSource(
 
         return try {
 
-            val response = if(queries[Constants.QUERY_KEY_CATEGORY] != null){
-                Log.d("Category", "Category: ${queries[Constants.QUERY_KEY_CATEGORY]}")
+            val response = if(query_category != null){
+                Log.d("Category", "News ViewModel: category: $query_category")
                 newsApi.getTopCategoryHeadlines(
-                    queries[Constants.QUERY_KEY_COUNTRY]!!,
-                    queries[Constants.QUERY_KEY_CATEGORY]!!,
+                    query_country,
+                    query_category,
                     position,
-                    queries[Constants.QUERY_KEY_API_KEY]!!
+                    query_apiKey
                 )
             }else{
+                Log.d("Category", "News ViewModel: called getTopHeadline()")
                 newsApi.getTopHeadlines(
-                    queries[Constants.QUERY_KEY_COUNTRY]!!,
+                    query_country,
                     position,
-                    queries[Constants.QUERY_KEY_API_KEY]!!
+                    query_apiKey
                 )
             }
-            Log.d("News Response", "News Response Response Dissection: ${queries[Constants.QUERY_KEY_CATEGORY]}")
             val article = response.body()!!.articles
+            Log.d("News Response", "News Response Error: $article")
 
             LoadResult.Page(
                 data = article,
@@ -44,7 +47,7 @@ class NewsPagingSource(
                 nextKey = if (article.isEmpty()) null else position + 1
             )
         } catch (e: Exception) {
-            Log.d("News Response", "News Response Error: ${e.message}")
+            Log.d("News Response", "News Response Error: $e")
             LoadResult.Error(e)
         }
     }
