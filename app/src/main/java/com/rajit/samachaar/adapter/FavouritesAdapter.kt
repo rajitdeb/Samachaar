@@ -53,7 +53,7 @@ class FavouritesAdapter(private val onArticleClickListener: OnArticleClickListen
         holder.binding.articleDescription.text = currentFavourite.article.description
 
         holder.itemView.setOnClickListener {
-            onArticleClickListener.onArticleClick(currentFavourite.article)
+            onArticleClickListener.onArticleClick(currentFavourite.article, currentFavourite.category)
         }
     }
 

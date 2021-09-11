@@ -11,5 +11,6 @@ import kotlinx.parcelize.Parcelize
 data class FavouriteArticlesEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
+    val category: String,
     val article: Article
 )

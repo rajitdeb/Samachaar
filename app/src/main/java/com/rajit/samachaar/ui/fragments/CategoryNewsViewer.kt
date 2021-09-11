@@ -63,8 +63,10 @@ class CategoryNewsViewer : Fragment(), OnArticleClickListener {
         _binding = null
     }
 
-    override fun onArticleClick(article: Article) {
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsActivity(article)
+    override fun onArticleClick(article: Article, category: String) {
+        val action = CategoryNewsViewerDirections.actionCategoryNewsViewerToDetailsActivity(
+            article = article, categoryName = args.categoryName
+        )
         findNavController().navigate(action)
     }
 }

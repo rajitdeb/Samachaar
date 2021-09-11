@@ -39,8 +39,8 @@ class DetailsActivity : AppCompatActivity() {
         setupData(article)
 
         mainViewModel.favouriteArticles.observe(this, { listOfArticles ->
-            for(item in listOfArticles){
-                if(item.article.url == article.url){
+            for (item in listOfArticles) {
+                if (item.article.url == article.url) {
                     isFavourites = true
                     savedArticleId = item.id
                     binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
@@ -56,17 +56,29 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun checkIfFavourite() {
         Toast.makeText(applicationContext, "isFav: $isFavourites", Toast.LENGTH_SHORT).show()
-        if (isFavourites){
+        if (isFavourites) {
             isFavourites = false
-            mainViewModel.deleteFavouriteArticle(FavouriteArticlesEntity(savedArticleId, args.article))
+            mainViewModel.deleteFavouriteArticle(
+                FavouriteArticlesEntity(
+                    savedArticleId,
+                    args.categoryName,
+                    args.article
+                )
+            )
             binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_unchecked)
         } else {
-            mainViewModel.insertFavourites(FavouriteArticlesEntity(0, args.article))
+            mainViewModel.insertFavourites(
+                FavouriteArticlesEntity(
+                    0,
+                    args.categoryName,
+                    args.article
+                )
+            )
             binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
         }
     }
 
-    private fun setupData(article: Article){
+    private fun setupData(article: Article) {
 
         if (article.urlToImage == null) {
             binding.articleThumbnail.setImageResource(R.drawable.error_placeholder)
@@ -78,7 +90,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         binding.articleTitleTv.text = article.title
-        binding.articleCategoryTv.text = "Top Headlines"
+        binding.articleCategoryTv.text = args.categoryName
 
         val publishedAtFull = article.publishedAt
         if (publishedAtFull != null) {

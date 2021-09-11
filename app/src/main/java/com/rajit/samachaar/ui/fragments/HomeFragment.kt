@@ -1,7 +1,6 @@
 package com.rajit.samachaar.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +18,10 @@ import com.rajit.samachaar.data.network.model.Category
 import com.rajit.samachaar.databinding.FragmentHomeBinding
 import com.rajit.samachaar.interfaces.OnArticleClickListener
 import com.rajit.samachaar.interfaces.OnCategoryClickListener
-import com.rajit.samachaar.util.Constants
 import com.rajit.samachaar.viewmodel.MainViewModel
 import com.rajit.samachaar.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener {
@@ -46,7 +43,7 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        listOfCategory= listOf(
+        listOfCategory = listOf(
             Category("Business", R.drawable.business),
             Category("Entertainment", R.drawable.entertainment),
             Category("Health", R.drawable.health),
@@ -58,11 +55,12 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
         setupAllRV()
 
         lifecycleScope.launchWhenResumed {
-           newsViewModel.readCountryAndCode.collect {
-               mainViewModel.getTopHeadlines(it.countryCode).observe(viewLifecycleOwner, { pagingData ->
-                   mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-               })
-           }
+            newsViewModel.readCountryAndCode.collect {
+                mainViewModel.getTopHeadlines(it.countryCode)
+                    .observe(viewLifecycleOwner, { pagingData ->
+                        mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    })
+            }
         }
 
         binding.countryFab.setOnClickListener {
@@ -74,13 +72,14 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
 
     private fun setupAllRV() {
         binding.categoryRV.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             categoryAdapter.setData(listOfCategory)
             adapter = categoryAdapter
             setHasFixedSize(true)
         }
 
-        binding.topHeadlinesRv.apply{
+        binding.topHeadlinesRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = mAdapter.withLoadStateHeaderAndFooter(
                 header = NewsLoadStateAdapter { mAdapter.retry() },
@@ -95,8 +94,11 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
         _binding = null
     }
 
-    override fun onArticleClick(article: Article) {
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsActivity(article)
+    override fun onArticleClick(article: Article, category: String) {
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailsActivity(
+            article = article,
+            categoryName = category
+        )
         findNavController().navigate(action)
     }
 

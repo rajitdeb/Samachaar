@@ -45,6 +45,9 @@
         <argument
             android:name="categoryName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_categoryNewsViewer_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
     </fragment>
 
     <activity
@@ -55,6 +58,9 @@
         <argument
             android:name="article"
             app:argType="com.rajit.samachaar.data.network.model.Article" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
     </activity>
 
     <dialog

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rajit.samachaar.R
 import com.rajit.samachaar.adapter.FavouritesAdapter
 import com.rajit.samachaar.data.network.model.Article
 import com.rajit.samachaar.databinding.FragmentFavoritesBinding
@@ -50,8 +49,11 @@ class FavoritesFragment : Fragment(), OnArticleClickListener {
         _binding = null
     }
 
-    override fun onArticleClick(article: Article) {
-        val action = FavoritesFragmentDirections.actionFavoritesFragmentToDetailsActivity(article)
+    override fun onArticleClick(article: Article, category: String) {
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToDetailsActivity(
+            article = article,
+            categoryName = category
+        )
         findNavController().navigate(action)
     }
 }

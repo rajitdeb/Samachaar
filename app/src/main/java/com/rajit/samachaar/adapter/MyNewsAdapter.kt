@@ -61,7 +61,7 @@ class MyNewsAdapter(private val onArticleClickListener: OnArticleClickListener) 
             holder.bind(currentArticle)
 
             holder.itemView.setOnClickListener {
-                onArticleClickListener.onArticleClick(currentArticle)
+                onArticleClickListener.onArticleClick(currentArticle, "Top Headlines")
             }
 
         }
