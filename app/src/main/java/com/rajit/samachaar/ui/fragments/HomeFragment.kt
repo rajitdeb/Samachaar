@@ -1,13 +1,17 @@
 package com.rajit.samachaar.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rajit.samachaar.R
 import com.rajit.samachaar.adapter.CategoryAdapter
@@ -36,6 +40,7 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +65,27 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
                     .observe(viewLifecycleOwner, { pagingData ->
                         mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
                     })
+            }
+
+        }
+
+        mAdapter.addLoadStateListener { loadState ->
+            binding.apply {
+                topHeadlinesRv.isVisible = loadState.source.refresh is LoadState.NotLoading
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                errorTv.isVisible = loadState.source.refresh is LoadState.Error
+                btnRetry.isVisible = loadState.source.refresh is LoadState.Error
+                btnRetry.setOnClickListener {
+                    lifecycleScope.launchWhenResumed {
+                        newsViewModel.readCountryAndCode.collect {
+                            mainViewModel.getTopHeadlines(it.countryCode)
+                                .observe(viewLifecycleOwner, { pagingData ->
+                                    mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                                })
+                        }
+
+                    }
+                }
             }
         }
 

@@ -2,10 +2,7 @@ package com.rajit.samachaar.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.rajit.samachaar.data.local.entity.Country
 import com.rajit.samachaar.util.Constants
@@ -28,6 +25,7 @@ class DataStoreRepository @Inject constructor(
     private object PreferenceKeys {
         val selectedCountry = stringPreferencesKey(Constants.COUNTRY_PREFERENCE_KEY)
         val selectedCountryCode = stringPreferencesKey(Constants.COUNTRY_CODE_PREFERENCE_KEY)
+        val backOnline = booleanPreferencesKey("backOnline")
     }
 
     private val dataStore: DataStore<Preferences> = context.countryPreferences
@@ -42,6 +40,25 @@ class DataStoreRepository @Inject constructor(
             preferences[PreferenceKeys.selectedCountryCode] = countryCode
         }
     }
+
+    suspend fun saveBackOnline(backOnline: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.backOnline]
+        }
+    }
+
+    fun readBackOnline(): Flow<Boolean> = dataStore.data
+        .catch { exception ->
+            if(exception is IOException){
+                emit(emptyPreferences())
+            }else{
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val backOnline = preferences[PreferenceKeys.backOnline] ?: false
+            backOnline
+        }
 
     // read country data
     fun readCountryAndCode(): Flow<Country> = dataStore.data

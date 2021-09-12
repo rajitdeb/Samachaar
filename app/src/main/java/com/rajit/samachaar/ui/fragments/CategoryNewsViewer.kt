@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rajit.samachaar.adapter.MyNewsAdapter
 import com.rajit.samachaar.data.network.model.Article
@@ -52,6 +54,25 @@ class CategoryNewsViewer : Fragment(), OnArticleClickListener {
                     .observe(viewLifecycleOwner, { pagingData ->
                         mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
                     })
+            }
+        }
+
+        mAdapter.addLoadStateListener { loadState ->
+            binding.apply {
+                categoryNewsRv.isVisible = loadState.source.refresh is LoadState.NotLoading
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                errorTv.isVisible = loadState.source.refresh is LoadState.Error
+                btnRetry.isVisible = loadState.source.refresh is LoadState.Error
+                btnRetry.setOnClickListener {
+                    lifecycleScope.launchWhenResumed {
+                        newsViewModel.readCountryAndCode.collect {
+                            mainViewModel.getTopCategoryHeadlines(it.countryCode, args.categoryName)
+                                .observe(viewLifecycleOwner, { pagingData ->
+                                    mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                                })
+                        }
+                    }
+                }
             }
         }
 
