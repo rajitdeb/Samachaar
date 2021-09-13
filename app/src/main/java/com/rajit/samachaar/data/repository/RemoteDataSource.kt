@@ -30,4 +30,14 @@ class RemoteDataSource @Inject constructor(
             ),
             pagingSourceFactory = { NewsPagingSource(articlesApi, query_country, query_category, query_apiKey) }
         ).flow
+
+    fun searchArticle(searchQuery: String, query_apiKey: String) =
+        Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                maxSize = 100,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { NewsPagingSource(articlesApi, searchQuery = searchQuery, query_apiKey = query_apiKey) }
+        ).flow
 }

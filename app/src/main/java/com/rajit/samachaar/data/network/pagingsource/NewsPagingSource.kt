@@ -10,9 +10,10 @@ import com.rajit.samachaar.util.Constants.Companion.NEWS_STARTING_PAGE_INDEX
 
 class NewsPagingSource(
     private val newsApi: ArticlesApi,
-    private val query_country: String,
+    private val query_country: String? = null,
     private val query_category: String? = null,
-    private val query_apiKey: String
+    private val query_apiKey: String,
+    private val searchQuery: String? = null
 ) : PagingSource<Int, Article>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
@@ -23,23 +24,26 @@ class NewsPagingSource(
         return try {
 
             val response = if(query_category != null){
-                Log.d("Category", "News ViewModel: category: $query_category")
+//                Log.d("Category", "News ViewModel: category: $query_category")
                 newsApi.getTopCategoryHeadlines(
-                    query_country,
+                    query_country!!,
                     query_category,
                     position,
                     query_apiKey
                 )
+            }else if(query_country != null && searchQuery == null){
+//                    Log.d("Category", "News ViewModel: called getTopHeadline()")
+                    newsApi.getTopHeadlines(
+                        query_country,
+                        position,
+                        query_apiKey
+                    )
             }else{
-                Log.d("Category", "News ViewModel: called getTopHeadline()")
-                newsApi.getTopHeadlines(
-                    query_country,
-                    position,
-                    query_apiKey
-                )
+                newsApi.searchArticle(searchQuery!!, position, query_apiKey)
             }
             val article = response.body()!!.articles
-            Log.d("News Response", "News Response Error: $article")
+//            Log.d("News Response", "News Response Error: $article")
+//            Log.d("News Response", "News Response Error: ${response.body()}")
 
             LoadResult.Page(
                 data = article,

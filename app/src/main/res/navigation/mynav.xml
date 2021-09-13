@@ -35,7 +35,11 @@
         android:id="@+id/search_articles_fragment"
         android:name="com.rajit.samachaar.ui.fragments.SearchArticlesFragment"
         android:label="Search Articles"
-        tools:layout="@layout/fragment_search_articles" />
+        tools:layout="@layout/fragment_search_articles" >
+        <action
+            android:id="@+id/action_search_articles_fragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/categoryNewsViewer"

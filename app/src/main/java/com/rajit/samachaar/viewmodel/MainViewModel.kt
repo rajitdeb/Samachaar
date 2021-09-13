@@ -58,4 +58,9 @@ class MainViewModel @Inject constructor(
                 Constants.QUERY_VALUE_API_KEY
             ).cachedIn(viewModelScope).asLiveData()
     }
+
+    fun searchArticle(searchQuery: String): LiveData<PagingData<Article>> {
+        return repository.remote.searchArticle(searchQuery, Constants.QUERY_VALUE_API_KEY)
+            .cachedIn(viewModelScope).asLiveData()
+    }
 }

@@ -22,4 +22,11 @@ interface ArticlesApi {
         @Query("apiKey") apiKey: String,
     ): Response<NewsArticles>
 
+    @GET("v2/everything")
+    suspend fun searchArticle(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("apiKey") apiKey: String
+    ): Response<NewsArticles>
+
 }
