@@ -36,6 +36,13 @@ class Constants {
         const val DEFAULT_COUNTRY_PREFERENCES = "India"
         const val DEFAULT_COUNTRY_CODE_PREFERENCES = "in"
 
+        const val LANGUAGE_PREFERENCE_KEY = "language"
+        const val LANGUAGE_ID_PREFERENCE_KEY = "languageId"
+        const val SOURCE_PREFERENCE_KEY = "sources"
+        const val SOURCE_ID_PREFERENCE_KEY = "sourcesId"
+        const val DEFAULT_LANGUAGE_PREFERENCE_VALUE = "en"
+        const val DEFAULT_SOURCE_PREFERENCE_VALUE = "all"
+
     }
 
 }

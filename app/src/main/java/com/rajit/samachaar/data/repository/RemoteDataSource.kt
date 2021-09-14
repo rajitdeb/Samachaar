@@ -31,13 +31,14 @@ class RemoteDataSource @Inject constructor(
             pagingSourceFactory = { NewsPagingSource(articlesApi, query_country, query_category, query_apiKey) }
         ).flow
 
-    fun searchArticle(searchQuery: String, query_apiKey: String) =
+    fun searchArticle(searchQuery: String, language: String, source: String? = null, query_apiKey: String) =
         Pager(
             config = PagingConfig(
                 pageSize = 10,
                 maxSize = 100,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { NewsPagingSource(articlesApi, searchQuery = searchQuery, query_apiKey = query_apiKey) }
+            pagingSourceFactory = { NewsPagingSource(articlesApi, searchQuery = searchQuery,
+                query_language = language, query_source = source, query_apiKey = query_apiKey) }
         ).flow
 }

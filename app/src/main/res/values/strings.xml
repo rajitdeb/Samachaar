@@ -28,5 +28,37 @@
     <string name="select_a_country">Select a Country</string>
     <string name="submit">Submit</string>
     <string name="delete_all">Delete All</string>
+    <string name="sources">Sources</string>
+    <string name="languages">Languages</string>
+    <string name="en_english">en - English</string>
+    <string name="es_espanol">es - Espanol</string>
+    <string name="de_german">de - German</string>
+    <string name="fr_french">fr - French</string>
+    <string name="ru_russian">ru - Russian</string>
+    <string name="the_hindu">The Hindu</string>
+    <string name="times_of_india">Times of India</string>
+    <string name="google_news_in">Google News - In</string>
+    <string name="bbc">BBC</string>
+    <string name="lenta">Lenta</string>
+    <string name="rbc">RBC</string>
+    <string name="al_jazeera">Al-Jazeera</string>
+    <string name="abc">ABC</string>
+    <string name="aftenpost">Aftenposten</string>
+    <string name="bloomberg">Bloomberg</string>
+    <string name="business_insider">Business Insider</string>
+    <string name="cnn">CNN</string>
+    <string name="google_news">Google News</string>
+    <string name="national_geographic">National Geographic</string>
+    <string name="ign">IGN</string>
+    <string name="google_news_fr">Google News - Fr</string>
+    <string name="google_news_au">Google News - Au</string>
+    <string name="google_news_ca">Google News - Ca</string>
+    <string name="bbc_uk">BBC - UK</string>
+    <string name="four_four_two_uk">Four Four Two - UK</string>
+    <string name="google_news_il">Google News - Il</string>
+    <string name="the_jerusalem_post">The Jerusalem Post</string>
+    <string name="focus">Focus</string>
+    <string name="all_source">All</string>
+
 
 </resources>

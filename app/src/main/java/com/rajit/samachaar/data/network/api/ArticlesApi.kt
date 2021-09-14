@@ -29,4 +29,20 @@ interface ArticlesApi {
         @Query("apiKey") apiKey: String
     ): Response<NewsArticles>
 
+    @GET("v2/everything")
+    suspend fun searchArticleWithLanguage(
+        @Query("q") query: String,
+        @Query("language") language: String,
+        @Query("page") page: Int,
+        @Query("apiKey") apiKey: String
+    ): Response<NewsArticles>
+
+    @GET("v2/everything")
+    suspend fun searchArticleWithLanguageAndSource(
+        @Query("q") query: String,
+        @Query("language") language: String,
+        @Query("sources") source: String,
+        @Query("page") page: Int,
+        @Query("apiKey") apiKey: String
+    ): Response<NewsArticles>
 }

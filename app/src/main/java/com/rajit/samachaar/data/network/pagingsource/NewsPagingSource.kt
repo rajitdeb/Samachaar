@@ -5,7 +5,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.rajit.samachaar.data.network.api.ArticlesApi
 import com.rajit.samachaar.data.network.model.Article
-import com.rajit.samachaar.util.Constants
 import com.rajit.samachaar.util.Constants.Companion.NEWS_STARTING_PAGE_INDEX
 
 class NewsPagingSource(
@@ -13,7 +12,9 @@ class NewsPagingSource(
     private val query_country: String? = null,
     private val query_category: String? = null,
     private val query_apiKey: String,
-    private val searchQuery: String? = null
+    private val searchQuery: String? = null,
+    private val query_language: String? = null,
+    private val query_source: String? = null
 ) : PagingSource<Int, Article>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
@@ -23,7 +24,7 @@ class NewsPagingSource(
 
         return try {
 
-            val response = if(query_category != null){
+            val response = if (query_category != null) {
 //                Log.d("Category", "News ViewModel: category: $query_category")
                 newsApi.getTopCategoryHeadlines(
                     query_country!!,
@@ -31,15 +32,30 @@ class NewsPagingSource(
                     position,
                     query_apiKey
                 )
-            }else if(query_country != null && searchQuery == null){
+            } else if (query_country != null && searchQuery == null) {
 //                    Log.d("Category", "News ViewModel: called getTopHeadline()")
-                    newsApi.getTopHeadlines(
-                        query_country,
+                newsApi.getTopHeadlines(
+                    query_country,
+                    position,
+                    query_apiKey
+                )
+            } else {
+                if(query_source != null){
+                    newsApi.searchArticleWithLanguageAndSource(
+                        searchQuery!!,
+                        query_language!!,
+                        query_source,
                         position,
                         query_apiKey
                     )
-            }else{
-                newsApi.searchArticle(searchQuery!!, position, query_apiKey)
+                }else{
+                    newsApi.searchArticleWithLanguage(
+                        searchQuery!!,
+                        query_language!!,
+                        position,
+                        query_apiKey
+                    )
+                }
             }
             val article = response.body()!!.articles
 //            Log.d("News Response", "News Response Error: $article")

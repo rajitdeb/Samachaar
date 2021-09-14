@@ -26,4 +26,12 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveCountryAndCode(country, countryCode)
         }
+
+    val readLanguageAndSource = dataStoreRepository.readLanguageAndSource()
+
+    fun saveLanguageAndSource(language: String, languageId: Int, source: String, sourceId: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveLanguageAndSource(language, languageId, source, sourceId)
+        }
+
 }

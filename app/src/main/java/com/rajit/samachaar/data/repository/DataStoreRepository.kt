@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.rajit.samachaar.data.local.entity.Country
+import com.rajit.samachaar.data.local.entity.LanguageAndSource
 import com.rajit.samachaar.util.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -25,7 +26,10 @@ class DataStoreRepository @Inject constructor(
     private object PreferenceKeys {
         val selectedCountry = stringPreferencesKey(Constants.COUNTRY_PREFERENCE_KEY)
         val selectedCountryCode = stringPreferencesKey(Constants.COUNTRY_CODE_PREFERENCE_KEY)
-        val backOnline = booleanPreferencesKey("backOnline")
+        val selectedLanguage = stringPreferencesKey(Constants.LANGUAGE_PREFERENCE_KEY)
+        val selectedLanguageId = intPreferencesKey(Constants.LANGUAGE_ID_PREFERENCE_KEY)
+        val selectedSource = stringPreferencesKey(Constants.SOURCE_PREFERENCE_KEY)
+        val selectedSourceId = intPreferencesKey(Constants.SOURCE_ID_PREFERENCE_KEY)
     }
 
     private val dataStore: DataStore<Preferences> = context.countryPreferences
@@ -40,25 +44,6 @@ class DataStoreRepository @Inject constructor(
             preferences[PreferenceKeys.selectedCountryCode] = countryCode
         }
     }
-
-    suspend fun saveBackOnline(backOnline: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[PreferenceKeys.backOnline]
-        }
-    }
-
-    fun readBackOnline(): Flow<Boolean> = dataStore.data
-        .catch { exception ->
-            if(exception is IOException){
-                emit(emptyPreferences())
-            }else{
-                throw exception
-            }
-        }
-        .map { preferences ->
-            val backOnline = preferences[PreferenceKeys.backOnline] ?: false
-            backOnline
-        }
 
     // read country data
     fun readCountryAndCode(): Flow<Country> = dataStore.data
@@ -75,6 +60,36 @@ class DataStoreRepository @Inject constructor(
             Country(
                 selectedCountry,
                 selectedCountryCode
+            )
+        }
+
+    suspend fun saveLanguageAndSource(language: String, languageId: Int, source: String, sourceId: Int){
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.selectedLanguage] = language
+            preferences[PreferenceKeys.selectedLanguageId] = languageId
+            preferences[PreferenceKeys.selectedSource] = source
+            preferences[PreferenceKeys.selectedSourceId] = sourceId
+        }
+    }
+
+    fun readLanguageAndSource(): Flow<LanguageAndSource> = dataStore.data
+        .catch { exception ->
+            if(exception is IOException) {
+                emit(emptyPreferences())
+            }else{
+                throw exception
+            }
+        }
+        .map { prefereces ->
+            val selectedLanguage = prefereces[PreferenceKeys.selectedLanguage] ?: Constants.DEFAULT_LANGUAGE_PREFERENCE_VALUE
+            val selectedLanguageId = prefereces[PreferenceKeys.selectedLanguageId] ?: 0
+            val selectedSource = prefereces[PreferenceKeys.selectedSource] ?: Constants.DEFAULT_SOURCE_PREFERENCE_VALUE
+            val selectedSourceId = prefereces[PreferenceKeys.selectedSourceId] ?: 0
+            LanguageAndSource(
+                selectedLanguage,
+                selectedLanguageId,
+                selectedSource,
+                selectedSourceId
             )
         }
 }

@@ -1,13 +1,11 @@
 package com.rajit.samachaar.viewmodel
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.rajit.samachaar.data.local.entity.Country
@@ -55,16 +53,38 @@ class MainViewModel @Inject constructor(
             .cachedIn(viewModelScope).asLiveData()
     }
 
-    fun getTopCategoryHeadlines(query_country: String, query_category: String): LiveData<PagingData<Article>> {
+    fun getTopCategoryHeadlines(
+        query_country: String,
+        query_category: String
+    ): LiveData<PagingData<Article>> {
         return repository.remote.getTopCategoryHeadlines(
-                query_country,
-                query_category,
-                Constants.QUERY_VALUE_API_KEY
-            ).cachedIn(viewModelScope).asLiveData()
+            query_country,
+            query_category,
+            Constants.QUERY_VALUE_API_KEY
+        ).cachedIn(viewModelScope).asLiveData()
     }
 
-    fun searchArticle(searchQuery: String): LiveData<PagingData<Article>> {
-        return repository.remote.searchArticle(searchQuery, Constants.QUERY_VALUE_API_KEY)
-            .cachedIn(viewModelScope).asLiveData()
+    fun searchArticle(
+        searchQuery: String,
+        language: String,
+        source: String? = null
+    ): LiveData<PagingData<Article>> {
+        return if (source != null) {
+            repository.remote.searchArticle(
+                searchQuery,
+                language,
+                source,
+                query_apiKey = Constants.QUERY_VALUE_API_KEY
+            )
+                .cachedIn(viewModelScope).asLiveData()
+        } else {
+            repository.remote.searchArticle(
+                searchQuery,
+                language,
+                query_apiKey = Constants.QUERY_VALUE_API_KEY
+            )
+                .cachedIn(viewModelScope).asLiveData()
+        }
+
     }
 }
