@@ -1,13 +1,12 @@
 package com.rajit.samachaar.ui.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rajit.samachaar.R
 import com.rajit.samachaar.adapter.FavouritesAdapter
 import com.rajit.samachaar.data.network.model.Article
 import com.rajit.samachaar.databinding.FragmentFavoritesBinding
@@ -31,6 +30,8 @@ class FavoritesFragment : Fragment(), OnArticleClickListener {
         // Inflate the layout for this fragment
         _binding = FragmentFavoritesBinding.inflate(layoutInflater, container, false)
 
+        setHasOptionsMenu(true)
+
         binding.favouritesRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
@@ -42,6 +43,20 @@ class FavoritesFragment : Fragment(), OnArticleClickListener {
         })
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.favourites_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.deleteAllFavouritesBtn){
+            mainViewModel.deleteAllFavourites()
+        } else {
+            return super.onOptionsItemSelected(item)
+        }
+
+        return true
     }
 
     override fun onDestroyView() {

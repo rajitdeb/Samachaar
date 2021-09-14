@@ -17,6 +17,9 @@ interface ArticlesDao {
     @Delete
     suspend fun deleteArticle(favouriteArticlesEntity: FavouriteArticlesEntity)
 
+    @Query("DELETE FROM FAVOURITES_TABLE")
+    suspend fun deleteAllFavourites()
+
     @Query("SELECT * FROM FAVOURITES_TABLE")
     fun getAllArticles(): Flow<List<FavouriteArticlesEntity>>
 

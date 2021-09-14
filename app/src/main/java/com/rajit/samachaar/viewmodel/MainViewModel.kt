@@ -43,6 +43,10 @@ class MainViewModel @Inject constructor(
             repository.local.deleteArticle(favouriteArticlesEntity)
         }
 
+    fun deleteAllFavourites() = viewModelScope.launch {
+        repository.local.deleteAllFavourites()
+    }
+
     /** RETROFIT **/
 
     fun getTopHeadlines(query_country: String): LiveData<PagingData<Article>> {

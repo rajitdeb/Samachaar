@@ -22,6 +22,10 @@ class LocalDataSource @Inject constructor(
         articlesDao.deleteArticle(favouriteArticlesEntity)
     }
 
+    suspend fun deleteAllFavourites() {
+        articlesDao.deleteAllFavourites()
+    }
+
     fun getAllFavourites(): Flow<List<FavouriteArticlesEntity>> {
         return articlesDao.getAllArticles()
     }
