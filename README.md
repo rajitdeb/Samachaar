@@ -24,7 +24,6 @@ The API used in this application is from NewsApi. Can be found [here.][2]
 
 ## Find me on
 [![LinkedIn Profile](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/imrajit/)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/rajit.deb/)
 
 [1]: https://github.com/rajitdeb/Samachaar/blob/7-implement-filter-button-in-search-fragment/apk/samachaar_final_build.apk?raw=true
 [2]: https://newsapi.org/
