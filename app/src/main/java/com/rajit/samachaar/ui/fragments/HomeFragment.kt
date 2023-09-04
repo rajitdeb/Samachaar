@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rajit.samachaar.R
 import com.rajit.samachaar.adapter.CategoryAdapter
 import com.rajit.samachaar.adapter.MyNewsAdapter
@@ -22,20 +26,27 @@ import com.rajit.samachaar.data.network.model.Category
 import com.rajit.samachaar.databinding.FragmentHomeBinding
 import com.rajit.samachaar.interfaces.OnArticleClickListener
 import com.rajit.samachaar.interfaces.OnCategoryClickListener
+import com.rajit.samachaar.util.Constants
 import com.rajit.samachaar.viewmodel.MainViewModel
 import com.rajit.samachaar.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener {
 
-    private lateinit var listOfCategory: List<Category>
+    private val listOfCategory: List<Category> = Constants.listOfCategory
 
     private val mainViewModel by viewModels<MainViewModel>()
     private val newsViewModel by viewModels<NewsViewModel>()
-    private val categoryAdapter: CategoryAdapter by lazy { CategoryAdapter(this) }
-    private val mAdapter: MyNewsAdapter by lazy { MyNewsAdapter(this) }
+
+    private val categoryAdapter: CategoryAdapter by lazy {
+        CategoryAdapter(this)
+    }
+
+    private val mAdapter: MyNewsAdapter by lazy {
+        MyNewsAdapter(this)
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -48,25 +59,19 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        listOfCategory = listOf(
-            Category("Business", R.drawable.business),
-            Category("Entertainment", R.drawable.entertainment),
-            Category("Health", R.drawable.health),
-            Category("Sports", R.drawable.sports),
-            Category("Science", R.drawable.science),
-            Category("Technology", R.drawable.technology)
-        )
-
         setupAllRV()
 
-        lifecycleScope.launchWhenResumed {
-            newsViewModel.readCountryAndCode.collect {
-                mainViewModel.getTopHeadlines(it.countryCode)
-                    .observe(viewLifecycleOwner, { pagingData ->
-                        mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-                    })
+        // Replaced lifecycleScope.launchWhenResumed with lifecycle.repeatOnLifecycle
+        // for performance efficiency
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                newsViewModel.readCountryAndCode.collect {
+                    mainViewModel.getTopHeadlines(it.countryCode)
+                        .observe(viewLifecycleOwner) { pagingData ->
+                            mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                        }
+                }
             }
-
         }
 
         mAdapter.addLoadStateListener { loadState ->
@@ -76,14 +81,21 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
                 errorTv.isVisible = loadState.source.refresh is LoadState.Error
                 btnRetry.isVisible = loadState.source.refresh is LoadState.Error
                 btnRetry.setOnClickListener {
-                    lifecycleScope.launchWhenResumed {
-                        newsViewModel.readCountryAndCode.collect {
-                            mainViewModel.getTopHeadlines(it.countryCode)
-                                .observe(viewLifecycleOwner, { pagingData ->
-                                    mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-                                })
-                        }
 
+                    // Replaced lifecycleScope.launchWhenResumed with lifecycle.repeatOnLifecycle
+                    // for performance efficiency
+                    lifecycleScope.launch {
+                        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                            newsViewModel.readCountryAndCode.collect {
+                                mainViewModel.getTopHeadlines(it.countryCode)
+                                    .observe(viewLifecycleOwner) { pagingData ->
+                                        mAdapter.submitData(
+                                            viewLifecycleOwner.lifecycle,
+                                            pagingData
+                                        )
+                                    }
+                            }
+                        }
                     }
                 }
             }
@@ -97,9 +109,16 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
     }
 
     private fun setupAllRV() {
+
+        mAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
         binding.categoryRV.apply {
             layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
             categoryAdapter.setData(listOfCategory)
             adapter = categoryAdapter
             setHasFixedSize(true)
@@ -113,6 +132,7 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
             )
             setHasFixedSize(true)
         }
+
     }
 
     override fun onDestroyView() {
@@ -120,12 +140,17 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
         _binding = null
     }
 
-    override fun onArticleClick(article: Article, category: String) {
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailsActivity(
-            article = article,
-            categoryName = category
-        )
-        findNavController().navigate(action)
+    override fun onArticleClick(article: Article?, category: String) {
+
+        if (article?.title != null && article.url != null) {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailsActivity(
+                article = article,
+                categoryName = category
+            )
+            findNavController().navigate(action)
+        } else {
+            Toast.makeText(requireContext(), "Article Not Available", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onClick(category: String) {

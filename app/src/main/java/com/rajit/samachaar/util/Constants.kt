@@ -1,6 +1,8 @@
 package com.rajit.samachaar.util
 
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.rajit.samachaar.R
+import com.rajit.samachaar.data.network.model.Category
 
 class Constants {
 
@@ -42,6 +44,18 @@ class Constants {
         const val SOURCE_ID_PREFERENCE_KEY = "sourcesId"
         const val DEFAULT_LANGUAGE_PREFERENCE_VALUE = "en"
         const val DEFAULT_SOURCE_PREFERENCE_VALUE = "all"
+        const val DEFAULT_SEARCH_QUERY_PREFERENCE_VALUE = ""
+
+        val listOfCategory = listOf(
+            Category("Business", R.drawable.business),
+            Category("Entertainment", R.drawable.entertainment),
+            Category("Health", R.drawable.health),
+            Category("Sports", R.drawable.sports),
+            Category("Science", R.drawable.science),
+            Category("Technology", R.drawable.technology)
+        )
+
+        const val SEARCH_QUERY_PREFERENCE_KEY = "searchQuery"
 
     }
 

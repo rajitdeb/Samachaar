@@ -20,6 +20,7 @@
         tools:itemCount="1"
         tools:listitem="@layout/category_item" />
 
+    <!-- Top Headlines RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/topHeadlinesRv"
         android:layout_width="0dp"
@@ -38,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/color_accent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:translationZ="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -3,12 +3,13 @@ package com.rajit.samachaar.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.rajit.samachaar.databinding.CategoryItemBinding
 import com.rajit.samachaar.data.network.model.Category
+import com.rajit.samachaar.databinding.CategoryItemBinding
 import com.rajit.samachaar.interfaces.OnCategoryClickListener
 
-class CategoryAdapter(private val onCategoryClickListener: OnCategoryClickListener):
-    RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
+class CategoryAdapter(
+    private val onCategoryClickListener: OnCategoryClickListener
+) : RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 
     private var categoryList: List<Category> = emptyList()
 
@@ -28,9 +29,11 @@ class CategoryAdapter(private val onCategoryClickListener: OnCategoryClickListen
         return categoryList.size
     }
 
-    inner class MyViewHolder(val binding: CategoryItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class MyViewHolder(
+        val binding: CategoryItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(currentCategory: Category){
+        fun bind(currentCategory: Category) {
             binding.apply {
                 categoryName.text = currentCategory.name
                 categoryImage.setImageResource(currentCategory.resourceId)
@@ -46,6 +49,10 @@ class CategoryAdapter(private val onCategoryClickListener: OnCategoryClickListen
 
     fun setData(list: List<Category>) {
         categoryList = list
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
 }

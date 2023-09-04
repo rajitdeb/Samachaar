@@ -19,11 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
-    private var _binding: ActivityDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityDetailsBinding
 
-    var isFavourites = false
-    var savedArticleId = -1
+    private var isFavourites = false
+    private var savedArticleId = -1
 
     private val args by navArgs<DetailsActivityArgs>()
     private val mainViewModel by viewModels<MainViewModel>()
@@ -31,14 +30,14 @@ class DetailsActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityDetailsBinding.inflate(layoutInflater)
+        binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val article = args.article
 
         setupData(article)
 
-        mainViewModel.favouriteArticles.observe(this, { listOfArticles ->
+        mainViewModel.favouriteArticles.observe(this) { listOfArticles ->
             for (item in listOfArticles) {
                 if (item.article.url == article.url) {
                     isFavourites = true
@@ -46,7 +45,7 @@ class DetailsActivity : AppCompatActivity() {
                     binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
                 }
             }
-        })
+        }
 
         binding.saveToFavourites.setOnClickListener {
             checkIfFavourite()
@@ -55,7 +54,6 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun checkIfFavourite() {
-        Toast.makeText(applicationContext, "isFav: $isFavourites", Toast.LENGTH_SHORT).show()
         if (isFavourites) {
             isFavourites = false
             mainViewModel.deleteFavouriteArticle(
@@ -65,7 +63,15 @@ class DetailsActivity : AppCompatActivity() {
                     args.article
                 )
             )
+
             binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_unchecked)
+
+            Toast.makeText(
+                this@DetailsActivity,
+                "Removed from Favourites",
+                Toast.LENGTH_SHORT
+            ).show()
+
         } else {
             mainViewModel.insertFavourites(
                 FavouriteArticlesEntity(
@@ -74,10 +80,19 @@ class DetailsActivity : AppCompatActivity() {
                     args.article
                 )
             )
+
             binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
+
+            Toast.makeText(
+                this@DetailsActivity,
+                "Saved to Favourites",
+                Toast.LENGTH_SHORT
+            ).show()
+
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupData(article: Article) {
 
         if (article.urlToImage == null) {
@@ -108,10 +123,5 @@ class DetailsActivity : AppCompatActivity() {
             intent.data = Uri.parse(article.url)
             startActivity(intent)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

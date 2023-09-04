@@ -30,6 +30,8 @@ class DataStoreRepository @Inject constructor(
         val selectedLanguageId = intPreferencesKey(Constants.LANGUAGE_ID_PREFERENCE_KEY)
         val selectedSource = stringPreferencesKey(Constants.SOURCE_PREFERENCE_KEY)
         val selectedSourceId = intPreferencesKey(Constants.SOURCE_ID_PREFERENCE_KEY)
+
+        val selectedSearchQuery = stringPreferencesKey(Constants.SEARCH_QUERY_PREFERENCE_KEY)
     }
 
     private val dataStore: DataStore<Preferences> = context.countryPreferences
@@ -38,7 +40,7 @@ class DataStoreRepository @Inject constructor(
     suspend fun saveCountryAndCode(
         country: String,
         countryCode: String
-    ){
+    ) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.selectedCountry] = country
             preferences[PreferenceKeys.selectedCountryCode] = countryCode
@@ -48,22 +50,30 @@ class DataStoreRepository @Inject constructor(
     // read country data
     fun readCountryAndCode(): Flow<Country> = dataStore.data
         .catch { exception ->
-            if(exception is IOException) {
+            if (exception is IOException) {
                 emit(emptyPreferences())
-            }else{
+            } else {
                 throw exception
             }
         }
         .map { preferences ->
-            val selectedCountry = preferences[PreferenceKeys.selectedCountry] ?: Constants.DEFAULT_COUNTRY_PREFERENCES
-            val selectedCountryCode = preferences[PreferenceKeys.selectedCountryCode] ?: Constants.DEFAULT_COUNTRY_CODE_PREFERENCES
+            val selectedCountry =
+                preferences[PreferenceKeys.selectedCountry] ?: Constants.DEFAULT_COUNTRY_PREFERENCES
+            val selectedCountryCode = preferences[PreferenceKeys.selectedCountryCode]
+                ?: Constants.DEFAULT_COUNTRY_CODE_PREFERENCES
+
             Country(
                 selectedCountry,
                 selectedCountryCode
             )
         }
 
-    suspend fun saveLanguageAndSource(language: String, languageId: Int, source: String, sourceId: Int){
+    suspend fun saveLanguageAndSource(
+        language: String,
+        languageId: Int,
+        source: String,
+        sourceId: Int
+    ) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.selectedLanguage] = language
             preferences[PreferenceKeys.selectedLanguageId] = languageId
@@ -74,22 +84,47 @@ class DataStoreRepository @Inject constructor(
 
     fun readLanguageAndSource(): Flow<LanguageAndSource> = dataStore.data
         .catch { exception ->
-            if(exception is IOException) {
+            if (exception is IOException) {
                 emit(emptyPreferences())
-            }else{
+            } else {
                 throw exception
             }
         }
-        .map { prefereces ->
-            val selectedLanguage = prefereces[PreferenceKeys.selectedLanguage] ?: Constants.DEFAULT_LANGUAGE_PREFERENCE_VALUE
-            val selectedLanguageId = prefereces[PreferenceKeys.selectedLanguageId] ?: 0
-            val selectedSource = prefereces[PreferenceKeys.selectedSource] ?: Constants.DEFAULT_SOURCE_PREFERENCE_VALUE
-            val selectedSourceId = prefereces[PreferenceKeys.selectedSourceId] ?: 0
+        .map { preferences ->
+            val selectedLanguage = preferences[PreferenceKeys.selectedLanguage]
+                ?: Constants.DEFAULT_LANGUAGE_PREFERENCE_VALUE
+            val selectedLanguageId = preferences[PreferenceKeys.selectedLanguageId] ?: 0
+            val selectedSource = preferences[PreferenceKeys.selectedSource]
+                ?: Constants.DEFAULT_SOURCE_PREFERENCE_VALUE
+            val selectedSourceId = preferences[PreferenceKeys.selectedSourceId] ?: 0
             LanguageAndSource(
                 selectedLanguage,
                 selectedLanguageId,
                 selectedSource,
                 selectedSourceId
             )
+        }
+
+    suspend fun saveSearchQuery(
+        query: String
+    ) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.selectedSearchQuery] = query
+        }
+    }
+
+    fun readSearchQuery(): Flow<String> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val selectedSearchQuery = preferences[PreferenceKeys.selectedSearchQuery]
+                ?: Constants.DEFAULT_SEARCH_QUERY_PREFERENCE_VALUE
+
+            selectedSearchQuery
         }
 }

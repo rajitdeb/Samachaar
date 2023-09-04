@@ -4,6 +4,8 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.rajit.samachaar.data.repository.DataStoreRepository
@@ -22,16 +24,31 @@ class NewsViewModel @Inject constructor(
 
     val readCountryAndCode = dataStoreRepository.readCountryAndCode()
 
-    fun saveCountryAndCode(country: String, countryCode: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveCountryAndCode(country, countryCode)
-        }
+    fun saveCountryAndCode(
+        country: String,
+        countryCode: String
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveCountryAndCode(country, countryCode)
+    }
 
     val readLanguageAndSource = dataStoreRepository.readLanguageAndSource()
 
-    fun saveLanguageAndSource(language: String, languageId: Int, source: String, sourceId: Int) =
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveLanguageAndSource(language, languageId, source, sourceId)
-        }
+    fun saveLanguageAndSource(
+        language: String, languageId: Int,
+        source: String,
+        sourceId: Int
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveLanguageAndSource(language, languageId, source, sourceId)
+    }
+
+    var readSearchQuery = dataStoreRepository.readSearchQuery()
+
+    fun setSearchQuery(query: String) = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveSearchQuery(query)
+    }
+
+    fun resetSearchQuery() = viewModelScope.launch(Dispatchers.IO) {
+        dataStoreRepository.saveSearchQuery("")
+    }
 
 }
