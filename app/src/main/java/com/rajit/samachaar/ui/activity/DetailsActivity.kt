@@ -19,11 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
-    private var _binding: ActivityDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityDetailsBinding
 
-    var isFavourites = false
-    var savedArticleId = -1
+    private var isFavourites = false
+    private var savedArticleId = -1
 
     private val args by navArgs<DetailsActivityArgs>()
     private val mainViewModel by viewModels<MainViewModel>()
@@ -31,22 +30,22 @@ class DetailsActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityDetailsBinding.inflate(layoutInflater)
+        binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val article = args.article
 
         setupData(article)
 
-        mainViewModel.favouriteArticles.observe(this, { listOfArticles ->
-            for(item in listOfArticles){
-                if(item.article.url == article.url){
+        mainViewModel.favouriteArticles.observe(this) { listOfArticles ->
+            for (item in listOfArticles) {
+                if (item.article.url == article.url) {
                     isFavourites = true
                     savedArticleId = item.id
                     binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
                 }
             }
-        })
+        }
 
         binding.saveToFavourites.setOnClickListener {
             checkIfFavourite()
@@ -55,18 +54,46 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun checkIfFavourite() {
-        Toast.makeText(applicationContext, "isFav: $isFavourites", Toast.LENGTH_SHORT).show()
-        if (isFavourites){
+        if (isFavourites) {
             isFavourites = false
-            mainViewModel.deleteFavouriteArticle(FavouriteArticlesEntity(savedArticleId, args.article))
+            mainViewModel.deleteFavouriteArticle(
+                FavouriteArticlesEntity(
+                    savedArticleId,
+                    args.categoryName,
+                    args.article
+                )
+            )
+
             binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_unchecked)
+
+            Toast.makeText(
+                this@DetailsActivity,
+                "Removed from Favourites",
+                Toast.LENGTH_SHORT
+            ).show()
+
         } else {
-            mainViewModel.insertFavourites(FavouriteArticlesEntity(0, args.article))
+            mainViewModel.insertFavourites(
+                FavouriteArticlesEntity(
+                    0,
+                    args.categoryName,
+                    args.article
+                )
+            )
+
             binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
+
+            Toast.makeText(
+                this@DetailsActivity,
+                "Saved to Favourites",
+                Toast.LENGTH_SHORT
+            ).show()
+
         }
     }
 
-    private fun setupData(article: Article){
+    @SuppressLint("SetTextI18n")
+    private fun setupData(article: Article) {
 
         if (article.urlToImage == null) {
             binding.articleThumbnail.setImageResource(R.drawable.error_placeholder)
@@ -78,7 +105,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         binding.articleTitleTv.text = article.title
-        binding.articleCategoryTv.text = "Top Headlines"
+        binding.articleCategoryTv.text = args.categoryName
 
         val publishedAtFull = article.publishedAt
         if (publishedAtFull != null) {
@@ -96,10 +123,5 @@ class DetailsActivity : AppCompatActivity() {
             intent.data = Uri.parse(article.url)
             startActivity(intent)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

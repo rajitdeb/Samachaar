@@ -20,4 +20,10 @@
 
     <color name="author_chip_color">#131313</color>
 
+    <!-- Custom Chip Style -->
+    <color name="chipBackgroundColor">#F9F9F9</color>
+    <color name="checked_chip_background_color">#20DF2424</color>
+    <color name="checked_chip_text_color">@color/color_accent</color>
+    <color name="chipTextColor">@color/black</color>
+
 </resources>

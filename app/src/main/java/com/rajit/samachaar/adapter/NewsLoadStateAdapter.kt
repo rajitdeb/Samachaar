@@ -8,7 +8,9 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rajit.samachaar.databinding.PagingFooterBinding
 
-class NewsLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<NewsLoadStateAdapter.LoadStateViewHolder>() {
+class NewsLoadStateAdapter(
+    private val retry: () -> Unit
+) : LoadStateAdapter<NewsLoadStateAdapter.LoadStateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -17,23 +19,20 @@ class NewsLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<New
     }
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
-        holder.bind(loadState)
+
+        holder.binding.apply {
+            progressBar.isVisible = loadState is LoadState.Loading
+            buttonRetry.isVisible = loadState !is LoadState.Loading
+            textviewError.isVisible = loadState !is LoadState.Loading
+        }
     }
 
-    inner class LoadStateViewHolder(private val binding: PagingFooterBinding) :
+    inner class LoadStateViewHolder(val binding: PagingFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.buttonRetry.setOnClickListener {
                 retry.invoke()
-            }
-        }
-
-        fun bind(loadState: LoadState){
-            binding.apply {
-                progressBar.isVisible = loadState is LoadState.Loading
-                buttonRetry.isVisible = loadState !is LoadState.Loading
-                textviewError.isVisible = loadState !is LoadState.Loading
             }
         }
 

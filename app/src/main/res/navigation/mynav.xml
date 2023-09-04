@@ -35,7 +35,14 @@
         android:id="@+id/search_articles_fragment"
         android:name="com.rajit.samachaar.ui.fragments.SearchArticlesFragment"
         android:label="Search Articles"
-        tools:layout="@layout/fragment_search_articles" />
+        tools:layout="@layout/fragment_search_articles" >
+        <action
+            android:id="@+id/action_search_articles_fragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+        <action
+            android:id="@+id/action_search_articles_fragment_to_sourceAndLanguageBottomSheet"
+            app:destination="@id/sourceAndLanguageBottomSheet" />
+    </fragment>
 
     <fragment
         android:id="@+id/categoryNewsViewer"
@@ -45,6 +52,9 @@
         <argument
             android:name="categoryName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_categoryNewsViewer_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
     </fragment>
 
     <activity
@@ -55,12 +65,29 @@
         <argument
             android:name="article"
             app:argType="com.rajit.samachaar.data.network.model.Article" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
     </activity>
 
     <dialog
         android:id="@+id/countryBottomSheet"
         android:name="com.rajit.samachaar.ui.fragments.CountryBottomSheet"
         android:label="fragment_country_bottom_sheet"
-        tools:layout="@layout/country_bottom_sheet" />
+        tools:layout="@layout/country_bottom_sheet" >
+        <action
+            android:id="@+id/action_countryBottomSheet_to_home_fragment"
+            app:destination="@id/home_fragment" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/sourceAndLanguageBottomSheet"
+        android:name="com.rajit.samachaar.ui.fragments.SourceAndLanguageBottomSheet"
+        android:label="filter_bottom_sheet"
+        tools:layout="@layout/filter_bottom_sheet" >
+        <action
+            android:id="@+id/action_sourceAndLanguageBottomSheet_to_search_articles_fragment"
+            app:destination="@id/search_articles_fragment" />
+    </dialog>
 
 </navigation>

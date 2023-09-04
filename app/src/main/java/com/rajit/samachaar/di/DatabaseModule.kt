@@ -23,7 +23,7 @@ object DatabaseModule {
         context,
         FavouriteArticlesDatabase::class.java,
         Constants.FAVOURITES_DB_NAME
-    ).build()
+    ).createFromAsset("database/news_db.db").build()
 
     @Singleton
     @Provides

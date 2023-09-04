@@ -3,6 +3,7 @@ package com.rajit.samachaar.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,37 +13,13 @@ import com.rajit.samachaar.data.network.model.Article
 import com.rajit.samachaar.databinding.BigArticleItemRowBinding
 import com.rajit.samachaar.interfaces.OnArticleClickListener
 
-class MyNewsAdapter(private val onArticleClickListener: OnArticleClickListener) :
-    PagingDataAdapter<Article, MyNewsAdapter.MyTopHeadlinesViewHolder>(ARTICLE_COMPARATOR) {
+class MyNewsAdapter(
+    private val onArticleClickListener: OnArticleClickListener
+) : PagingDataAdapter<Article, MyNewsAdapter.MyTopHeadlinesViewHolder>(ARTICLE_COMPARATOR) {
 
-    class MyTopHeadlinesViewHolder(val binding: BigArticleItemRowBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(currentArticle: Article) {
-            binding.apply {
-                if (currentArticle.urlToImage != null) {
-                    binding.bigArticleThumbnail.load(currentArticle.urlToImage) {
-                        crossfade(true)
-                        crossfade(1000)
-                        placeholder(R.drawable.article_thumbnail_placeholder)
-                        error(R.drawable.error_placeholder)
-                    }
-                } else {
-                    bigArticleThumbnail.setImageResource(R.drawable.error_placeholder)
-                }
-                binding.bigArticleTitle.text = currentArticle.title
-                binding.bigArticleSource.text = currentArticle.source?.name
-
-                val publishedAtFull = currentArticle.publishedAt
-                if (publishedAtFull != null) {
-                    val publishedSplit = publishedAtFull.split("T")
-                    val publishedSplit2 = publishedSplit[1].split("Z")
-
-                    binding.bigArticlePublishedAtTv.text =
-                        "${publishedSplit[0]}, ${publishedSplit2[0]} UTC"
-                }
-            }
-        }
+    class MyTopHeadlinesViewHolder(
+        val binding: BigArticleItemRowBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             fun from(parent: ViewGroup): MyTopHeadlinesViewHolder {
@@ -56,12 +33,38 @@ class MyNewsAdapter(private val onArticleClickListener: OnArticleClickListener) 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyTopHeadlinesViewHolder, position: Int) {
         val currentArticle = getItem(position)
+
         if (currentArticle != null) {
 
-            holder.bind(currentArticle)
+            holder.binding.apply {
+                if (currentArticle.urlToImage != null) {
+                    bigArticleThumbnail.load(currentArticle.urlToImage) {
+                        crossfade(true)
+                        crossfade(1000)
+                        placeholder(R.drawable.article_thumbnail_placeholder)
+                        error(R.drawable.error_placeholder)
+                    }
+                } else {
+                    bigArticleThumbnail.setImageResource(R.drawable.error_placeholder)
+                    cardView.strokeColor =
+                        ContextCompat.getColor(root.context, R.color.color_accent)
+                    cardView.strokeWidth = 5
+                }
+
+                bigArticleTitle.text = currentArticle.title
+                bigArticleSource.text = currentArticle.source?.name
+
+                val publishedAtFull = currentArticle.publishedAt
+                if (publishedAtFull != null) {
+                    val publishedSplit = publishedAtFull.split("T")
+                    val publishedSplit2 = publishedSplit[1].split("Z")
+
+                    bigArticlePublishedAtTv.text = "${publishedSplit[0]}, ${publishedSplit2[0]} UTC"
+                }
+            }
 
             holder.itemView.setOnClickListener {
-                onArticleClickListener.onArticleClick(currentArticle)
+                onArticleClickListener.onArticleClick(currentArticle, "Top Headlines")
             }
 
         }
@@ -89,4 +92,7 @@ class MyNewsAdapter(private val onArticleClickListener: OnArticleClickListener) 
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }
