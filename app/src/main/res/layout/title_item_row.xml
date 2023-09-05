@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gilroy_extrabold"
         android:text="@string/top_headlines"
-        android:textColor="@color/black"
+        android:textColor="@color/defaultHeadingColor"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

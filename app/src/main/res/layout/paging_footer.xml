@@ -9,7 +9,8 @@
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/color_accent"/>
 
     <TextView
         android:id="@+id/textview_error"
@@ -21,7 +22,6 @@
         android:id="@+id/button_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/logo_first"
         android:text="@string/retry" />
 
 </LinearLayout>

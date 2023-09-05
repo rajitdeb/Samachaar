@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/countryBottomSheetBg"
     android:padding="16dp">
 
     <TextView
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gilroy_bold"
         android:text="@string/set_a_country"
-        android:textColor="@color/heading_textcolor"
+        android:textColor="@color/countryBottomSheetHeading"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

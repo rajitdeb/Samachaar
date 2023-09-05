@@ -27,18 +27,18 @@
     <color name="chipTextColor">@color/black</color>
 
     <color name="detailDescriptionViewBg">@color/logo_first</color>
-    <color name="detailScreenDescriptionBg">@color/white</color>
-    <color name="detailScreenDescriptionHeading">@color/heading_textcolor</color>
+    <color name="detailScreenDescriptionBg">@color/heading_textcolor</color>
+    <color name="detailScreenDescriptionHeading">@color/white</color>
     <color name="detailScreenSrcTimeHeading">@color/logo_first</color>
     <color name="btnTextColor">@color/white</color>
 
-    <color name="countryBottomSheetBg">@color/white</color>
-    <color name="countryBottomSheetHeading">@color/heading_textcolor</color>
+    <color name="countryBottomSheetBg">@color/heading_textcolor</color>
+    <color name="countryBottomSheetHeading">@color/white</color>
 
-    <color name="filterBottomSheetBg">@color/white</color>
-    <color name="filterBottomSheetHeading">@color/heading_textcolor</color>
+    <color name="filterBottomSheetBg">@color/heading_textcolor</color>
+    <color name="filterBottomSheetHeading">@color/white</color>
 
-    <color name="bottomNavColor">@color/white</color>
-    <color name="defaultHeadingColor">@color/heading_textcolor</color>
+    <color name="bottomNavColor">@color/heading_textcolor</color>
+    <color name="defaultHeadingColor">@color/white</color>
 
 </resources>

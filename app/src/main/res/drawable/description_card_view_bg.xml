@@ -2,9 +2,7 @@
 <shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <corners android:topRightRadius="20dp"
-        android:topLeftRadius="20dp"/>
-
-    <solid android:color="@color/detailScreenDescriptionBg" />
+    <corners android:radius="12dp" />
+    <solid android:color="@color/detailDescriptionViewBg" />
 
 </shape>
