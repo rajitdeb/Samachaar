@@ -65,12 +65,21 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
         // for performance efficiency
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                newsViewModel.readCountryAndCode.collect {
-                    mainViewModel.getTopHeadlines(it.countryCode)
-                        .observe(viewLifecycleOwner) { pagingData ->
-                            mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-                        }
+                newsViewModel.getCountryAndCode().observe(viewLifecycleOwner) {
+                    mainViewModel.getTopHeadlines(
+                        it.countryCode
+                    ).observe(viewLifecycleOwner) { pagingData ->
+                        mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    }
                 }
+
+
+//                newsViewModel.readCountryAndCode.collect {
+//                    mainViewModel.getTopHeadlines(it.countryCode)
+//                        .observe(viewLifecycleOwner) { pagingData ->
+//                            mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//                        }
+//                }
             }
         }
 
@@ -86,7 +95,8 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
                     // for performance efficiency
                     lifecycleScope.launch {
                         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                            newsViewModel.readCountryAndCode.collect {
+
+                            newsViewModel.getCountryAndCode().observe(viewLifecycleOwner) {
                                 mainViewModel.getTopHeadlines(it.countryCode)
                                     .observe(viewLifecycleOwner) { pagingData ->
                                         mAdapter.submitData(
@@ -95,6 +105,16 @@ class HomeFragment : Fragment(), OnArticleClickListener, OnCategoryClickListener
                                         )
                                     }
                             }
+
+//                            newsViewModel.readCountryAndCode.collect {
+//                                mainViewModel.getTopHeadlines(it.countryCode)
+//                                    .observe(viewLifecycleOwner) { pagingData ->
+//                                        mAdapter.submitData(
+//                                            viewLifecycleOwner.lifecycle,
+//                                            pagingData
+//                                        )
+//                                    }
+//                            }
                         }
                     }
                 }

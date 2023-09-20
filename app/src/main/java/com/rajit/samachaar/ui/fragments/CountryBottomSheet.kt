@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rajit.samachaar.R
@@ -18,6 +19,7 @@ import com.rajit.samachaar.util.Constants
 import com.rajit.samachaar.viewmodel.MainViewModel
 import com.rajit.samachaar.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CountryBottomSheet : BottomSheetDialogFragment() {
@@ -41,29 +43,45 @@ class CountryBottomSheet : BottomSheetDialogFragment() {
         val countryList = mutableListOf<String>()
         var countryModelList = emptyList<Country>()
 
-        mainViewModel.allCountriesList.observe(viewLifecycleOwner) {
-            countryModelList = it
-            for (country in it)
-                countryList.add(country.countryName)
-            Toast.makeText(requireContext(), "countries: ${countryList.size}", Toast.LENGTH_SHORT)
-                .show()
+        lifecycleScope.launch {
+            mainViewModel.getAllCountriesList().observe(viewLifecycleOwner) {
+                countryModelList = it
+                for (country in it) {
+                    countryList.add(country.countryName)
+                }
+            }
         }
 
         val adapter = ArrayAdapter(requireContext(), R.layout.bottom_sheet_list_item, countryList)
         (binding.countrySelector.editText as AutoCompleteTextView).setAdapter(adapter)
 
-        newsViewModel.readCountryAndCode.asLiveData().observe(viewLifecycleOwner) {
-            country = it.countryName
-            countryCode = it.countryCode
+        lifecycleScope.launch {
+            newsViewModel.getCountryAndCode().observe(viewLifecycleOwner) {
+                country = it.countryName
+                countryCode = it.countryCode
 
-            (binding.countrySelector.editText as AutoCompleteTextView).setText(country, false)
+                (binding.countrySelector.editText as AutoCompleteTextView).setText(country, false)
 
-            Toast.makeText(
-                requireContext(),
-                "BottomSheet: $country, $countryCode",
-                Toast.LENGTH_SHORT
-            ).show()
+                Toast.makeText(
+                    requireContext(),
+                    "BottomSheet: $country, $countryCode",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
+
+//        newsViewModel.readCountryAndCode.asLiveData().observe(viewLifecycleOwner) {
+//            country = it.countryName
+//            countryCode = it.countryCode
+//
+//            (binding.countrySelector.editText as AutoCompleteTextView).setText(country, false)
+//
+//            Toast.makeText(
+//                requireContext(),
+//                "BottomSheet: $country, $countryCode",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
 
         (binding.countrySelector.editText as AutoCompleteTextView)
             .setOnItemClickListener { _, _, position, _ ->

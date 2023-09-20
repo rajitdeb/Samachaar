@@ -58,12 +58,20 @@ class CategoryNewsViewer : Fragment(), OnArticleClickListener {
         // for performance efficiency
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                newsViewModel.readCountryAndCode.collect {
+
+                newsViewModel.getCountryAndCode().observe(viewLifecycleOwner) {
                     mainViewModel.getTopCategoryHeadlines(it.countryCode, args.categoryName)
                         .observe(viewLifecycleOwner) { pagingData ->
                             mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
                         }
                 }
+
+//                newsViewModel.readCountryAndCode.collect {
+//                    mainViewModel.getTopCategoryHeadlines(it.countryCode, args.categoryName)
+//                        .observe(viewLifecycleOwner) { pagingData ->
+//                            mAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+//                        }
+//                }
             }
         }
 
@@ -79,17 +87,30 @@ class CategoryNewsViewer : Fragment(), OnArticleClickListener {
                     // for performance efficiency
                     lifecycleScope.launch {
                         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                            newsViewModel.readCountryAndCode.collect {
+
+                            newsViewModel.getCountryAndCode().observe(viewLifecycleOwner) {
                                 mainViewModel.getTopCategoryHeadlines(
                                     it.countryCode,
                                     args.categoryName
                                 ).observe(viewLifecycleOwner) { pagingData ->
-                                        mAdapter.submitData(
-                                            viewLifecycleOwner.lifecycle,
-                                            pagingData
-                                        )
+                                    mAdapter.submitData(
+                                        viewLifecycleOwner.lifecycle,
+                                        pagingData
+                                    )
                                 }
                             }
+
+//                            newsViewModel.readCountryAndCode.collect {
+//                                mainViewModel.getTopCategoryHeadlines(
+//                                    it.countryCode,
+//                                    args.categoryName
+//                                ).observe(viewLifecycleOwner) { pagingData ->
+//                                    mAdapter.submitData(
+//                                        viewLifecycleOwner.lifecycle,
+//                                        pagingData
+//                                    )
+//                                }
+//                            }
                         }
                     }
 

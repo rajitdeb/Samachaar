@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import coil.load
 import com.rajit.samachaar.R
@@ -15,6 +17,7 @@ import com.rajit.samachaar.data.network.model.Article
 import com.rajit.samachaar.databinding.ActivityDetailsBinding
 import com.rajit.samachaar.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
@@ -37,12 +40,14 @@ class DetailsActivity : AppCompatActivity() {
 
         setupData(article)
 
-        mainViewModel.favouriteArticles.observe(this) { listOfArticles ->
-            for (item in listOfArticles) {
-                if (item.article.url == article.url) {
-                    isFavourites = true
-                    savedArticleId = item.id
-                    binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
+        lifecycleScope.launch {
+            mainViewModel.getAllFavourites().observe(this@DetailsActivity) { listOfArticles ->
+                for (item in listOfArticles) {
+                    if (item.article.url == article.url) {
+                        isFavourites = true
+                        savedArticleId = item.id
+                        binding.saveToFavourites.setImageResource(R.drawable.ic_bookmark_checked)
+                    }
                 }
             }
         }
@@ -95,6 +100,8 @@ class DetailsActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun setupData(article: Article) {
 
+        binding.articleCategoryTv.visibility = View.INVISIBLE
+
         if (article.urlToImage == null) {
             binding.articleThumbnail.setImageResource(R.drawable.error_placeholder)
         } else {
@@ -105,7 +112,11 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         binding.articleTitleTv.text = article.title
-        binding.articleCategoryTv.text = args.categoryName
+        
+        if(args.categoryName.isNotEmpty()) {
+            binding.articleCategoryTv.visibility = View.VISIBLE
+            binding.articleCategoryTv.text = args.categoryName
+        }
 
         val publishedAtFull = article.publishedAt
         if (publishedAtFull != null) {

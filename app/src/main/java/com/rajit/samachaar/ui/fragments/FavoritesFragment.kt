@@ -7,6 +7,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.rajit.samachaar.databinding.FragmentFavoritesBinding
 import com.rajit.samachaar.interfaces.OnArticleClickListener
 import com.rajit.samachaar.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavoritesFragment : Fragment(), OnArticleClickListener {
@@ -46,8 +48,10 @@ class FavoritesFragment : Fragment(), OnArticleClickListener {
             adapter = mAdapter
         }
 
-        mainViewModel.favouriteArticles.observe(viewLifecycleOwner) {
-            mAdapter.setData(it)
+        lifecycleScope.launch {
+            mainViewModel.getAllFavourites().observe(viewLifecycleOwner) {
+                mAdapter.setData(it)
+            }
         }
 
         return binding.root

@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import com.rajit.samachaar.interfaces.OnArticleClickListener
 import com.rajit.samachaar.viewmodel.MainViewModel
 import com.rajit.samachaar.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchArticlesFragment : Fragment(), OnArticleClickListener, SearchView.OnQueryTextListener {
@@ -64,21 +66,6 @@ class SearchArticlesFragment : Fragment(), OnArticleClickListener, SearchView.On
                 searchArticlesRv.isVisible = loadStates.source.refresh is LoadState.NotLoading
                 errorTv.isVisible = loadStates.source.refresh is LoadState.Error
                 btnRetry.isVisible = loadStates.source.refresh is LoadState.Error
-                btnRetry.setOnClickListener {
-//                    Log.d("Search Query", "Search Query: $search_query")
-//                    if (sourcePref != null) {
-//
-//                        search_query?.let { query ->
-//                            searchArticle(
-//                                query,
-//                                languagePref,
-//                                sourcePref
-//                            )
-//                        }
-//                    } else {
-//                        search_query?.let { query -> searchArticle(query, languagePref) }
-//                    }
-                }
             }
         }
 
@@ -87,15 +74,18 @@ class SearchArticlesFragment : Fragment(), OnArticleClickListener, SearchView.On
             // go to filter bottom sheet
         }
 
-        newsViewModel.readLanguageAndSource.asLiveData().observe(viewLifecycleOwner) { langSrc ->
-
-            newsViewModel.readSearchQuery.asLiveData().observe(viewLifecycleOwner) {
-                if(!it.equals("")) {
-                    Log.i("Search Query", "Search Query Get: $it")
-                    searchArticle(it, langSrc.lang, langSrc.source)
+        lifecycleScope.launch {
+            newsViewModel.getLanguageAndSource().observe(viewLifecycleOwner) { langSrc ->
+                lifecycleScope.launch {
+                    newsViewModel.getSearchQuery().observe(viewLifecycleOwner) {
+                        if (!it.equals("")) {
+                            Log.i("Search Query", "Search Query Get: $it")
+                            searchArticle(it, langSrc.lang, langSrc.source)
+                        }
+                    }
                 }
-            }
 
+            }
         }
 
         return binding.root
@@ -202,9 +192,11 @@ class SearchArticlesFragment : Fragment(), OnArticleClickListener, SearchView.On
         binding.progressBar.visibility = View.VISIBLE
 
         if (query != null) {
-            newsViewModel.readLanguageAndSource.asLiveData().observe(viewLifecycleOwner) {
-                searchArticle(query, it.lang, it.source)
-                newsViewModel.setSearchQuery(query)
+            lifecycleScope.launch {
+                newsViewModel.getLanguageAndSource().observe(viewLifecycleOwner) {
+                    searchArticle(query, it.lang, it.source)
+                    newsViewModel.setSearchQuery(query)
+                }
             }
 
             search_query = query
