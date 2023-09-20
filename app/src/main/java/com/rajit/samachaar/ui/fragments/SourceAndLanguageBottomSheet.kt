@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
@@ -18,6 +19,7 @@ import com.rajit.samachaar.util.Constants
 import com.rajit.samachaar.viewmodel.MainViewModel
 import com.rajit.samachaar.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -40,13 +42,16 @@ class SourceAndLanguageBottomSheet : BottomSheetDialogFragment() {
     ): View? {
         _binding = FilterBottomSheetBinding.inflate(inflater, container, false)
 
-        newsViewModel.readLanguageAndSource.asLiveData().observe(viewLifecycleOwner) { value ->
-            languagePref = value.lang
-            languageIdPref = value.languageId
-            sourcePref = value.source
-            sourceIdPref = value.sourceId
-            updateChip(value.languageId, binding.languagesChipGroup)
-            updateChip(value.sourceId, binding.sourcesChipGroup)
+        lifecycleScope.launch {
+           newsViewModel.getLanguageAndSource().observe(viewLifecycleOwner) { value ->
+               languagePref = value.lang
+               languageIdPref = value.languageId
+               sourcePref = value.source
+               sourceIdPref = value.sourceId
+               updateChip(value.languageId, binding.languagesChipGroup)
+               updateChip(value.sourceId, binding.sourcesChipGroup)
+
+           }
         }
 
         binding.apply {

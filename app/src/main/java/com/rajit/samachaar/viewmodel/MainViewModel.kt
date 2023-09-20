@@ -14,6 +14,7 @@ import com.rajit.samachaar.data.repository.Repository
 import com.rajit.samachaar.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,10 +25,21 @@ class MainViewModel @Inject constructor(
 
     /** ROOM **/
 
-    var allCountriesList: LiveData<List<Country>> = repository.local.getAllCountries().asLiveData()
+    suspend fun getAllCountriesList(): LiveData<List<Country>> {
+        val job = viewModelScope.async(Dispatchers.IO) {
+            repository.local.getAllCountries().asLiveData()
+        }
 
-    var favouriteArticles: LiveData<List<FavouriteArticlesEntity>> =
-        repository.local.getAllFavourites().asLiveData()
+        return job.await()
+    }
+
+    suspend fun getAllFavourites(): LiveData<List<FavouriteArticlesEntity>> {
+        val job = viewModelScope.async(Dispatchers.IO) {
+            repository.local.getAllFavourites().asLiveData()
+        }
+
+        return job.await()
+    }
 
     fun insertFavourites(
         favouriteArticlesEntity: FavouriteArticlesEntity
@@ -41,7 +53,7 @@ class MainViewModel @Inject constructor(
         repository.local.deleteArticle(favouriteArticlesEntity)
     }
 
-    fun deleteAllFavourites() = viewModelScope.launch {
+    fun deleteAllFavourites() = viewModelScope.launch(Dispatchers.IO) {
         repository.local.deleteAllFavourites()
     }
 
