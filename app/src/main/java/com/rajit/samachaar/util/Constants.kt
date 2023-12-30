@@ -17,7 +17,7 @@ class Constants {
         // Default Queries
         const val QUERY_VALUE_COUNTRY = "in"
         const val QUERY_VALUE_CATEGORY = "business"
-        const val QUERY_VALUE_API_KEY = "3ca0f15f8bb241628b311a82029566bc"
+        const val QUERY_VALUE_API_KEY = "YOUR_API_KEY"
 
         // Exceptions Log Key
         const val PAGING_SOURCE_PAGE_KEY = "Paging Source"
