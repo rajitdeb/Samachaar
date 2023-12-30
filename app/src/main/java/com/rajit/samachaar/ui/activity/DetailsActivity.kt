@@ -15,6 +15,7 @@ import com.rajit.samachaar.R
 import com.rajit.samachaar.data.local.entity.FavouriteArticlesEntity
 import com.rajit.samachaar.data.network.model.Article
 import com.rajit.samachaar.databinding.ActivityDetailsBinding
+import com.rajit.samachaar.util.CustomTab
 import com.rajit.samachaar.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -130,9 +131,16 @@ class DetailsActivity : AppCompatActivity() {
         binding.articleDescriptionTv.text = article.description
 
         binding.learnMoreBtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(article.url)
-            startActivity(intent)
+            if(article.url != null){
+                CustomTab.loadURL(this@DetailsActivity, article.url)
+            } else {
+                Toast.makeText(
+                    this@DetailsActivity,
+                    "Invalid URL",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
     }
 }

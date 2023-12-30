@@ -16,14 +16,15 @@
         <activity
             android:name=".ui.activity.DetailsActivity"
             android:exported="true"
-            android:theme="@style/DetailsActivityTheme"/>
+            android:theme="@style/DetailsActivityTheme" />
         <activity
             android:name=".ui.activity.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:theme="@style/SplashScreenStyle">
+            android:theme="@style/SplashScreenStyle"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
