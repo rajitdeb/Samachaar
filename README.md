@@ -4,9 +4,6 @@ Samachaar is an API based news application that fetches top headlines and also a
 ## App Icon
 ![App Logo](https://i.postimg.cc/ZKW83fF5/launcher-icon.png)
 
-# Download
-App can be downloaded from [here.][1]
-
 ## Screenshots
 | Screenshot 1  | Screenshot 2  | Screenshot 3 |
 | --------------- | --------------- |------------|
@@ -20,8 +17,12 @@ App can be downloaded from [here.][1]
 | Screenshot 13  | Screenshot 14  | Screenshot 15 |
 | [![3-night.jpg](https://i.postimg.cc/GhqYqKy6/3-night.jpg)](https://postimg.cc/ZCvCqrjL) | [![4-night.jpg](https://i.postimg.cc/pXX5hj6C/4-night.jpg)](https://postimg.cc/5jT2DX1Q) | [![6-night.jpg](https://i.postimg.cc/RFLqqC12/6-night.jpg)](https://postimg.cc/1n4yjQjK)
 | Screenshot 16  | Screenshot 17  | Screenshot 18 |
-| [![7-night.jpg](https://i.postimg.cc/K8bG3hj2/7-night.jpg)](https://postimg.cc/3dL5z62S) | [![8-night.jpg](https://i.postimg.cc/3RkYQKSg/8-night.jpg)](https://postimg.cc/2bNP4ff6) | [![9-night.jpg](https://i.postimg.cc/52pVHHDB/9-night.jpg)](https://postimg.cc/Bj8ykvSb)
+| [![7-night.jpg](https://i.postimg.cc/K8bG3hj2/7-night.jpg)](https://postimg.cc/3dL5z62S) | [![8-night.jpg](https://i.postimg.cc/3RkYQKSg/8-night.jpg)](https://postimg.cc/2bNP4ff6) | [![9-night.jpg](https://i.postimg.cc/52pVHHDB/9-night.jpg)](https://postimg.cc/Bj8ykvSb) |
+| Screenshot 19 | Screenshot 20 | Screenshot 21 |
+| [![web-link-L1.jpg](https://i.postimg.cc/fW5bgz2w/web-link-L1.jpg)](https://postimg.cc/23bm1DNJ) | [![web-link-D1.jpg](https://i.postimg.cc/D03Yr3GH/web-link-D1.jpg)](https://postimg.cc/R6GRm8XL) | [![web-link-2.jpg](https://i.postimg.cc/GtYtfGH9/web-link-2.jpg)](https://postimg.cc/hQDKzJ8q) |
 
+# Download
+App can be downloaded from [here.][1]
 
 ## API Details
 The API used in this application is from NewsApi. Can be found [here.][2]
@@ -32,5 +33,5 @@ The API used in this application is from NewsApi. Can be found [here.][2]
 ## Find me on
 [![LinkedIn Profile](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/imrajit/)
 
-[1]: https://github.com/rajitdeb/Samachaar/blob/main/apk/samachaar_sep23_night_mode.apk?raw=true
+[1]: https://github.com/rajitdeb/Samachaar/releases/download/release/Samachaar-v0.0.6.apk
 [2]: https://newsapi.org/
